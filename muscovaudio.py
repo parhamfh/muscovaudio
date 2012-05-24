@@ -2,6 +2,7 @@
 
 import sys
 
+import OSC
 import pygame
 from pygame import Surface
 from pygame.font import Font
@@ -42,27 +43,44 @@ class Muscovaudio(object):
 		
 		# Init MouseHandler against our mouse
 		self.mouse = Mouse()
-		mh = MouseHandler(self.mouse, self.canvas)
+		self.mh = MouseHandler(self.mouse, self.canvas)
+		
+		# Create OSCPlayer
+		self.osc_player = OSCPlayer('127.0.0.1', 9000, "/muscovaudio")
+		# Connect OSCPlayer
+		self.osc_player.open_connection()
 		
 		# Update the pygame display
 		self.window.draw()
-		pygame.display.update()		
-		
-		while True:
-				# Check events
-				events = pygame.event.get()
-				for e in events:
-					mh.handle_event(e)
+		pygame.display.update()	
+			
+		# Test sound
+		self.osc_player.send_message(440, '/play')
+		try:
+			while True:
+					# Check events
+					events = pygame.event.get()
+					for e in events:
+						self.mh.handle_event(e)
+						
+						if e.type == KEYDOWN:
+							# Check if user has aborted
+							if e.key == K_ESCAPE:
+								raise KeyboardInterrupt
+					# Update the pygame display
+					self.window.draw()
+					pygame.display.update()
 					
-					if e.type == KEYDOWN:
-						# Check if user has aborted
-						if e.key == K_ESCAPE:
-							pygame.quit()
-							sys.exit(0)
-				# Update the pygame display
-				self.window.draw()
-				pygame.display.update()
-				
+					
+					
+		except KeyboardInterrupt:
+			print "Closing Muscovaudio"
+			# Do closing stuff here
+			pygame.quit()
+			self.osc_player.close_connection()					
+			print "Done"	
+			sys.exit(0)
+			
 class Canvas(Surface):
 	
 	def __init__(self, width = 630, height = 470, color = Colour.GOLFGREEN):
@@ -102,7 +120,7 @@ class Canvas(Surface):
 	def draw_line(self,start,end):
 		# Draw an actual, permanent line and erase measuring line
 		self.work_canvas.fill(self.color)
-#		self.mouse_info_canvas.fill(self.color)
+#		self.mouse_info_canvas.fill(self .color)
 		pygame.draw.line(self.line_canvas, Colour.TURQUOISE, start, end, 5)
 	
 	def draw_mouse_info(self, message, drawing=False):
@@ -242,7 +260,39 @@ class Mouse(object):
 	
 	def set_button_pressed(self, button):
 		self.button_pressed = self.BUTTONS[button]
+
+class OSCPlayer(object):
+	def __init__(self, ip_address, port, osc_address):
+		self.ip_address = ip_address
+		self.port = port
+		self.base_osc_address = osc_address
+		self.client = OSC.OSCClient()
+	
+	def open_connection(self):
+		try:
+			self.client.connect((self.ip_address,self.port))
+		except OSC.OSCClientError, o:
+			print o
+	
+	def close_connection(self):
+		self.send_message(0, '/stop')
+		self.client.close()
+	
+	def send_message(self, message, osc_address):
 		
+		osc_message = OSC.OSCMessage("{0}{1}".format(self.base_osc_address, osc_address))
+		osc_message.append(message)
+		try:
+			self.client.send(osc_message, 3)
+		except OSC.OSCClientError, o:
+			print o
+		
+	def send_bundle(self, bundle):
+		raise NotImplementedError
+	
+	def set_address(self, address):
+		self.osc_address = address
+
 class Ball(object):
 
 	def __init__(self, x_init, y_init, r, vel=0):
@@ -254,4 +304,5 @@ class Ball(object):
 if __name__ == "__main__":
 	muscovaudio = Muscovaudio()
 	muscovaudio.run()
+	
 	
