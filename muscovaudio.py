@@ -131,7 +131,7 @@ class Canvas(Surface):
     
     def draw_mouse_info(self, message, drawing=False):
         # Empty mouse canvas
-#        self.mouse_info_canvas.fill(self.color)
+        self.mouse_info_canvas.fill(self.color)
         # Create font and blit onto canvas
         font = Font(None, 22)
         mouse_info = font.render(message, 1, Colour.WHITE, Colour.BLUE)
