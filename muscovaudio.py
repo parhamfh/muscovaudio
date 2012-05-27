@@ -54,15 +54,18 @@ class Muscovaudio(object):
         self.window.draw()
         pygame.display.update()    
             
-        # Test sound
+            
+# Test sound
         self.osc_player.send_message(440, '/play')
         try:
             while True:
                     # Check events
                     events = pygame.event.get()
                     for e in events:
-                        self.mh.handle_event(e)
-                        
+                        self.mh.handle_event(e) 
+                        if e.type == pygame.QUIT:
+                        # Enables user to close the program using the mouse 
+                            sys.exit(0)
                         if e.type == KEYDOWN:
                             # Check if user has aborted
                             if e.key == K_ESCAPE:
@@ -70,9 +73,8 @@ class Muscovaudio(object):
                     # Update the pygame display
                     self.window.draw()
                     pygame.display.update()
-                    
-                    
-                    
+
+
         except KeyboardInterrupt:
             print "Closing Muscovaudio"
             # Do closing stuff here
