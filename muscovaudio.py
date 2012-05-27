@@ -35,9 +35,8 @@ class Muscovaudio(object):
         
         # Update the pygame display
         self.window.draw()
-            
-            
-# Test sound
+                
+        # Test sound
         self.osc_player.send_message(440, '/play')
         try:
             while True:
