@@ -3,8 +3,8 @@ Created on May 27, 2012
 
 @author: pfh
 '''
-
 import pygame
+from pygame.locals import MOUSEBUTTONDOWN, MOUSEBUTTONUP
 from mouse import Mouse
 
 class MouseHandler(object):
@@ -14,6 +14,7 @@ class MouseHandler(object):
         self.canvas = canvas    
         self.mouse = Mouse()
         self.osc_player = osc_player
+       
         # Mouse action 
         self.drag_start_x = 0
         self.drag_start_y = 0
@@ -31,13 +32,13 @@ class MouseHandler(object):
         
         
         # Check if the event is mouse-related
-        if event.type == pygame.MOUSEBUTTONDOWN:
+        if event.type == MOUSEBUTTONDOWN:
             self.mouse.mouse_pressed()
-            self.mouse.set_button_pressed(event.button)  
+            self.mouse.set_button_pressed(event.button)
                 
-        elif event.type == pygame.MOUSEBUTTONUP:
+        elif event.type == MOUSEBUTTONUP:
             self.mouse.mouse_released()
-            self.mouse.set_button_pressed(event.button)  
+            self.mouse.set_button_pressed(event.button)
         
         self.measure_line()
         # Write out mouse info
