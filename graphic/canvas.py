@@ -7,12 +7,14 @@ Created on May 26, 2012
 import pygame
 from pygame import Surface
 from pygame.font import Font
+from pygame.locals import K_LEFT, K_RIGHT, K_UP, K_DOWN
 
 from colour import Colour
+from object.line import Line
 
 class Canvas(Surface):
     
-    def __init__(self, width = 630, height = 470, color = Colour.GOLFGREEN):
+    def __init__(self, width = 630, height = 470, color = Colour.BLACK):
         super(Canvas, self).__init__((width, height))
         
         # Canvas color
@@ -46,6 +48,7 @@ class Canvas(Surface):
         '''
         self.global_x = x
         self.global_y = y
+        
     def draw_measuring_line(self,start,end):
         # Erase old measuring line
         self.work_canvas.fill(self.color)
@@ -57,6 +60,7 @@ class Canvas(Surface):
         self.work_canvas.fill(self.color)
 #        self.mouse_info_canvas.fill(self .color)
         pygame.draw.line(self.line_canvas, Colour.TURQUOISE, start, end, 5)
+        self.lines.append(Line(start,end, Colour.TURQUOISE))
     
     def draw_mouse_info(self, message, drawing=False):
         # Empty mouse canvas
@@ -71,7 +75,31 @@ class Canvas(Surface):
             ti = Font(None, 30).render("DRAWING",1,Colour.CHOCOLATE, Colour.WHITE)
             self.mouse_info_canvas.blit(ti, (self.mouse_info_x, self.mouse_info_y+20))
     
+    def move_lines(self, direction):
+        if direction == K_RIGHT:
+            (x, y) = (3, 0)
+            print "moving lines to the right with vector (%s,%s)"%(x,y)
+        elif direction == K_LEFT:
+            (x, y) = (-3, 0)
+            print "moving lines to the left with vector (%s,%s)"%(x,y)
+        elif direction == K_UP:
+            (x, y) = (0, -3)
+            print "moving lines up with vector (%s,%s)"%(x,y)
+        elif direction == K_DOWN:
+            (x, y) = (0, 3)
+            print "moving lines down with vector (%s,%s)"%(x,y)
+
+        for line in self.lines:
+            line.move((x, y))
+    
+    def update_content(self):
+        # Clear out line_canvas and readd 
+        self.line_canvas.fill(self.color)
+        for line in self.lines:
+            pygame.draw.line(self.line_canvas, line.colour, line.start, line.end, 5)
+            
     def draw_content(self):
+        self.update_content()
         # Draw the stuff on the canvas 
         self.blit(self.line_canvas,(0,0))
         self.blit(self.work_canvas,(0,0))
