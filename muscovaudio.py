@@ -8,9 +8,10 @@ from pygame.locals import KEYDOWN, K_ESCAPE
 from graphic.window import Window
 from handler.mouse import MouseHandler
 from handler.keyboard import KeyboardHandler
-
 from audio.osc.player import OSCPlayer
-from event.hook import EventHook
+from event.manager import EventManager
+from event.hook.keyboard import KeyPressed
+from event.hook.mouse import ButtonPressed
 
 class Muscovaudio(object):
     def __init__(self):
@@ -42,16 +43,16 @@ class Muscovaudio(object):
         # Test sound
         self.osc_player.send_message(440, '/play')
         
-        eh = EventHook()
-        eh += self.mh.handle_event
-        eh += self.kh.handle_event
+        em = EventManager()
+        em.event_to_handler_map[ButtonPressed] += self.mh.handle_event
+        em.event_to_handler_map[KeyPressed] += self.kh.handle_event
         
         try:
             while True:
                     # Check events
                     events = pygame.event.get()
                     for e in events:
-                        eh.fire(e)
+                        em.event_to_handler_map[ButtonPressed].fire(e)
                         if e.type == pygame.QUIT:
                         # Enables user to close the program using the mouse 
                             raise KeyboardInterrupt
@@ -59,6 +60,8 @@ class Muscovaudio(object):
                             # Check if user has aborted
                             if e.key == K_ESCAPE:
                                 raise KeyboardInterrupt
+                            else:
+                                em.event_to_handler_map[KeyPressed].fire(e)
                     # Update the pygame display
                     self.window.draw()
                     
@@ -66,7 +69,7 @@ class Muscovaudio(object):
             print "Closing Muscovaudio"
             # Do closing stuff here
             pygame.quit()
-            self.osc_player.close_connection()                    
+            self.osc_player.close_connection()
             print "Done"    
             sys.exit(0)
 
