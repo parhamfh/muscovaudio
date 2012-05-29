@@ -41,13 +41,13 @@ class EventManager(object):
 class EventHandlerMap(dict):
     """
         NOT SUPPORTED:
-        self.event_to_handler_map[ButtonPressed] = 'a' (must use __name__)
+        self.event_handler_map[ButtonPressed] = 'a' (must use __name__)
         
         SUPPORTED:
-        self.event_to_handler_map[ButtonPressed] (returns list of handlers)
+        self.event_handler_map[ButtonPressed] (returns list of handlers)
         
         USAGE:
-        self.event_to_handler_map[ButtonPressed] += event_handler
+        self.event_handler_map[ButtonPressed] += event_handler
     """
     def __getitem__(self, event_class, *args, **kwargs):
 #        print event_class.class_name()
