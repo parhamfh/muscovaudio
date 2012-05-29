@@ -8,6 +8,7 @@ class Ball(object):
         self.radius = r 
         self.velocity = []
         self.velocity.extend(velocity)
-        self.ball_image = pygame.image.load('../../../ball.png').convert_alpha()
-        self.ball_boundary = self.ball_image.get_rect(center=(x_init,y_init))
+        # TODO: fix correct path 
+        self.image = pygame.image.load('resources/img/ball.png').convert_alpha()
+        self.boundary = self.image.get_rect(center=(x_init,y_init))
 

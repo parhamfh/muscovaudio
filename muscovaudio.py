@@ -73,6 +73,15 @@ class Muscovaudio(object):
             print "Done"    
             sys.exit(0)
 
+
+balls = Balls(5,[2,2], 630, 470)
+print balls.create_balls()
+balls.check_ball_collisions() 
+balls.move_balls()
+balls.blit_balls(canvas) 
+
 if __name__ == "__main__":
     muscovaudio = Muscovaudio()
     muscovaudio.run()
+    
+
