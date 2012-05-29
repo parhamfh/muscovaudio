@@ -10,7 +10,7 @@ from handler.mouse import MouseHandler
 from handler.keyboard import KeyboardHandler
 
 from audio.osc.player import OSCPlayer
-from event import EventHook
+from event.hook import EventHook
 
 class Muscovaudio(object):
     def __init__(self):
@@ -32,7 +32,6 @@ class Muscovaudio(object):
         self.osc_player = OSCPlayer('127.0.0.1', 9000, "/muscovaudio")
         # Connect OSCPlayer
         self.osc_player.open_connection()
-        
         
         # Init MouseHandler against the mouse
         self.mh = MouseHandler(self.window.get_canvas(), self.osc_player)
