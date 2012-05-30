@@ -13,6 +13,7 @@ class EventHook(object):
     @staticmethod
     def fire_blank(resound, *args, **keywargs):
         """
+            WARNING! CONFUSING STATIC FUNCTION!
             Use this function to try the event hooks fire function. It simply
             echoes the arguments
             
@@ -29,6 +30,9 @@ class EventHook(object):
         self.handlers.remove(handler)
         return self
 
+    def __len__(self):
+        return len(self.handlers)
+    
     def fire(self, *args, **keywargs):
         for handler in self.handlers:
             handler(*args, **keywargs)

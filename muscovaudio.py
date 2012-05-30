@@ -43,16 +43,16 @@ class Muscovaudio(object):
         # Test sound
         self.osc_player.send_message(440, '/play')
         
-        em = EventManager()
-        em.event_to_handler_map[ButtonPressed] += self.mh.handle_event
-        em.event_to_handler_map[KeyPressed] += self.kh.handle_event
+        self.em = EventManager()
+        self.em[ButtonPressed] += self.mh.handle_event
+        self.em[KeyPressed] += self.kh.handle_event
         
         try:
             while True:
                     # Check events
                     events = pygame.event.get()
                     for e in events:
-                        em.event_to_handler_map[ButtonPressed].fire(e)
+                        self.em[ButtonPressed].fire(e)
                         if e.type == pygame.QUIT:
                         # Enables user to close the program using the mouse 
                             raise KeyboardInterrupt
@@ -61,7 +61,7 @@ class Muscovaudio(object):
                             if e.key == K_ESCAPE:
                                 raise KeyboardInterrupt
                             else:
-                                em.event_to_handler_map[KeyPressed].fire(e)
+                                self.em[KeyPressed].fire(e)
                     # Update the pygame display
                     self.window.draw()
                     
