@@ -40,9 +40,10 @@ class Muscovaudio(object):
         # Update the pygame display
         self.window.draw()
         
-        # Test sound
+        # Send start signal
         self.osc_player.send_message(440, '/play')
         
+        # Create Event Manager
         self.em = EventManager()
         self.em[ButtonPressed] += self.mh.handle_event
         self.em[KeyPressed] += self.kh.handle_event
