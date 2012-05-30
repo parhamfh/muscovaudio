@@ -10,12 +10,11 @@ from canvas import Canvas
 
 class Window(object):
     
-    def __init__(self, width=800, height=600, bkg_color=Colour.WHITE, canvas=None):
-        self.width = width
-        self.height = height
+    def __init__(self, boundary_width=800, boundary_height=600, bkg_color=Colour.BLACK, canvas=None):
+        self.boundary_width = boundary_width
+        self.boundary_height = boundary_height
         self.background_color = bkg_color
         self.window = None
-        self.init_window()
         self.canvas = canvas if canvas else Canvas() 
         self.set_canvas_postion()
         
@@ -33,13 +32,17 @@ class Window(object):
         return self.canvas
         
     def draw(self):
+        self.canvas.draw_balls()
         self.canvas.draw_content()
         self.window.blit(self.canvas, (self.canvas_x,self.canvas_y))
         pygame.display.update()
         
     def init_window(self):
-        self.window = pygame.display.set_mode((self.width,self.height))
+        self.window = pygame.display.set_mode((self.boundary_width,self.boundary_height))
         self.window.fill(self.background_color)
+        
+        # Create Balls
+        self.canvas.create_balls()
         
     def change_background_color(self, color):
         self.window.fill(color)
