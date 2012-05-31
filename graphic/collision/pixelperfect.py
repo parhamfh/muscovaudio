@@ -7,10 +7,10 @@ Created on May 30, 2012
 def check_collision(obj1,obj2):
     """checks if two objects have collided, using hitmasks"""
     try:
-        rect1 = obj1._collision_rect
-        rect2 = obj2._collision_rect
-        hitmask1 = obj1._collision_hitmask
-        hitmask2 = obj2._collision_hitmask
+        rect1 = obj1.rect
+        rect2 = obj2.rect
+        hitmask1 = obj1.hitmask
+        hitmask2 = obj2.hitmask
     except AttributeError, ae:
         print ae
         raise

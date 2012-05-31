@@ -38,13 +38,7 @@ class Ball(collision.Collidable):
         return self._rect
     
     @property
-    def _collision_rect(self):
-        return self._rect
-    
-    @property
-    def _collision_hitmask(self):
-        if self._hitmask is None:
-            self._calculate_hitmask()
+    def hitmask(self):
         return self._hitmask
     
     @property
