@@ -4,10 +4,12 @@ Created on 28 maj 2012
 @author: emser
 '''
 
-from ball import Ball
-
 import random
 
+from graphic.object.ball import Ball
+import graphic.collision.pixelperfect as pp
+
+# TODO make inherit from list
 class Balls(object):
 
     def __init__(self, amount, start_velocity, boundary_width, boundary_height):
@@ -60,9 +62,11 @@ class Balls(object):
     def _detect_ball_collision(self):
         for i in range(len(self.ball_list)):
             for j in range (i+1,len(self.ball_list)):
-                if self.ball_list[i].boundary.colliderect(self.ball_list[j].boundary):
+                if pp.check_collision(self.ball_list[i], self.ball_list[j]):
+#                if self.ball_list[i].boundary.colliderect(self.ball_list[j].boundary):
                     # reverse direction
                     self._resolve_collision(self.ball_list[i], self.ball_list[j])
+                    print "soft"
                     
     def _resolve_collision(self, ball, ball2):
         print "Collision between ball %s and %s!"%(ball.id, ball2.id)
@@ -72,11 +76,13 @@ class Balls(object):
     def _detect_line_collision(self, lines):
         for ball in self.ball_list:
             for line in lines:
-                pass
+                if pp.check_collision(ball, line):
+                    ball.reverse()
+                    print "KANON"
     
     def move_balls(self):
         for ball in self.ball_list: 
-            ball.boundary = ball.boundary.move(ball.velocity)
+            ball.set_boundary(ball.boundary.move(ball.velocity))
     
     def blit_balls(self, canvas):
         for ball in self.ball_list: 
