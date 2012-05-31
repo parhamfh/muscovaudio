@@ -1,6 +1,6 @@
 '''
 Created on May 30, 2012
 
-@author: pfh
+@author: parhamfh
 '''
 from balls import Ball, Balls

@@ -1,7 +1,7 @@
 '''
 Created on May 29, 2012
 
-@author: pfh
+@author: parhamfh
 '''
 class Line(object):
     
