@@ -7,7 +7,7 @@ Created on 28 maj 2012
 import random
 
 from graphic.object.ball import Ball
-
+import pygame
 from event.manager import EventManager
 from event.hook.ball import BallCollision 
 import graphic.collision.pixelperfect as pp
@@ -32,12 +32,12 @@ class Balls(object):
          
     def create_balls(self):
         self.ball_list = []
-#        for i in range(self.amount): 
-#            (x, y) = self.generate_random_coordinates()
+        for i in range(self.amount): 
+            (x, y) = self.generate_random_coordinates()
 #            # print 'Coordinates for Ball %s: %s'%(i, (x,y))
-#            self.ball_list.append(Ball(x,y,1,self.start_velocity, i, self.colorkey))
-        self.ball_list.append(Ball(20,20,1,[1,1],0,self.colorkey))
-        self.ball_list.append(Ball(300,300,1,[-1,-1],1,self.colorkey))
+            self.ball_list.append(Ball(x,y,1,self.start_velocity, i, self.colorkey))
+#        self.ball_list.append(Ball(20,20,10,[2,2],0,self.colorkey))
+#        self.ball_list.append(Ball(300,300,10,[-2,-2],1,self.colorkey))
         # print "Created balls."
         
     def detect_collisions(self, lines, width=None, height=None):
@@ -52,21 +52,32 @@ class Balls(object):
             b_height = self.boundary_height
         
         for ball in self.ball_list:
-            # TODO: balls get stuck when coordinates are (canvas_width, canvas_heigth) in generate_random_coordinates  
+            # TODO: balls get stuck when coordinates are (canvas_width, canvas_heigth) in generate_random_coordinates 
+            # TODO: send WallCollision
+            
+            
             if ball.boundary.left < 0:
+                ball.image = pygame.image.load('resources/img/ball_red.png')
                 ball.velocity[0] = abs(ball.velocity[0])
-                print 'Left wall collision!'
+                #print 'Left wall collision!'
+                # self.em[WallCollision].fire('left')
             if ball.boundary.right > b_width:
+                ball.image = pygame.image.load('resources/img/ball_red.png')
                 if ball.velocity[0] > 0: 
                     ball.velocity[0] = -1 * ball.velocity[0]
-                    print 'Right wall collision!'
+                    #print 'Right wall collision!'
+                    # self.em[WallCollision].fire('right')
             if ball.boundary.top < 0: 
+                ball.image = pygame.image.load('resources/img/ball_red.png')
                 ball.velocity[1] = abs(ball.velocity[1])
-                print 'Top wall collision!'
+                #print 'Top wall collision!'
+                # self.em[WallCollision].fire('top')
             if ball.boundary.bottom > b_height:
+                ball.image = pygame.image.load('resources/img/ball_red.png')
                 if ball.velocity > 0: 
                     ball.velocity[1] = -1 * ball.velocity[1]
-                    print 'Bottom wall collision!'
+                    #print 'Bottom wall collision!'
+                    # self.em[WallCollision].fire('bottom')
     
     def _detect_ball_collision(self):
         for i in range(len(self.ball_list)):
@@ -87,6 +98,8 @@ class Balls(object):
             for line in lines:
                 if pp.check_collision(ball, line):
                     ball.reverse()
+                    # TODO: send LineCollision
+                    # self.em[LineCollision].fire(?,?)
     
     def move_balls(self):
         for ball in self.ball_list: 
