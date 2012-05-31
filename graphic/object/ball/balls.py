@@ -4,9 +4,11 @@ Created on 28 maj 2012
 @author: emser
 '''
 
-from ball import Ball
-
 import random
+
+from graphic.object.ball import Ball
+from event.manager import EventManager
+from event.hook.ball import BallCollision 
 
 class Balls(object):
 
@@ -19,7 +21,7 @@ class Balls(object):
         self.boundary_height = boundary_height
         
         self.create_balls()
-        
+        self.em = EventManager()
         
     def generate_random_coordinates(self):
         # Returns random coordinates for balls 
@@ -48,14 +50,18 @@ class Balls(object):
             # TODO: balls get stuck when coordinates are (canvas_width, canvas_heigth) in generate_random_coordinates  
             if ball.boundary.left < 0:
                 ball.velocity[0] = abs(ball.velocity[0])
+                print 'Left wall collision!'
             if ball.boundary.right > b_width:
                 if ball.velocity[0] > 0: 
                     ball.velocity[0] = -1 * ball.velocity[0]
+                    print 'Right wall collision!'
             if ball.boundary.top < 0: 
-                ball.velocity[1] = abs(ball.velocity[1]) 
+                ball.velocity[1] = abs(ball.velocity[1])
+                print 'Top wall collision!'
             if ball.boundary.bottom > b_height:
                 if ball.velocity > 0: 
                     ball.velocity[1] = -1 * ball.velocity[1]
+                    print 'Bottom wall collision!'
     
     def _detect_ball_collision(self):
         for i in range(len(self.ball_list)):
@@ -65,7 +71,8 @@ class Balls(object):
                     self._resolve_collision(self.ball_list[i], self.ball_list[j])
                     
     def _resolve_collision(self, ball, ball2):
-        print "Collision between ball %s and %s!"%(ball.id, ball2.id)
+        #print "Collision between, ball %s and %s!"%(ball.id, ball2.id)
+        self.em[BallCollision].fire(ball, ball2)
         ball.reverse()
         ball2.reverse()
         
@@ -83,11 +90,3 @@ class Balls(object):
             canvas.blit(ball.image, ball.boundary)
     
 
-
-# TODO in muscovaudio.py: 
-# Create Balls object called 'balls' 
-# Inserted in the while loop that handles events in muscovaudio.py : 
-# For every event in pygame.event.get()
-# balls.check_ball_collisions 
-# balls.move_balls()
-# balls.blit_balls(canvas) 
