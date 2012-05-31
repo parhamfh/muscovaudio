@@ -12,7 +12,7 @@ from graphic.colour import Colour
 class Ball(collision.Collidable):
 
     def __init__(self, x_init, y_init, r, velocity, i, colorkey = None, 
-                 alpha = True):
+                 alpha = None):
         super(Ball, self).__init__()
         self.x = x_init
         self.y = y_init
@@ -24,8 +24,9 @@ class Ball(collision.Collidable):
         self.image = pygame.image.load('resources/img/ball.png')
         # Collidable attributes
         self._rect = self.image.get_rect(center=(x_init,y_init))
-        self.colorkey = Colour.WHITE
+        self.colorkey = colorkey
         self.alpha = alpha
+        self._hitmask = pygame.surfarray.array2d(self.image)
         
     def reverse(self):
         self.image = pygame.image.load('resources/img/ball_touched.png')

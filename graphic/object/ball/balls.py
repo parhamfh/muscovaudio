@@ -12,14 +12,14 @@ import graphic.collision.pixelperfect as pp
 # TODO make inherit from list
 class Balls(object):
 
-    def __init__(self, amount, start_velocity, boundary_width, boundary_height):
+    def __init__(self, amount, start_velocity, boundary_width, boundary_height, colorkey):
         # Amount = number of balls on canvas 
         self.amount = amount 
         self.start_velocity = start_velocity 
         # Ball boundaries 
         self.boundary_width = boundary_width
         self.boundary_height = boundary_height
-        
+        self.colorkey = colorkey
         self.create_balls()
         
         
@@ -29,10 +29,12 @@ class Balls(object):
          
     def create_balls(self):
         self.ball_list = []
-        for i in range(self.amount): 
-            (x, y) = self.generate_random_coordinates()
-            # print 'Coordinates for Ball %s: %s'%(i, (x,y))
-            self.ball_list.append(Ball(x,y,1,self.start_velocity, i))
+#        for i in range(self.amount): 
+#            (x, y) = self.generate_random_coordinates()
+#            # print 'Coordinates for Ball %s: %s'%(i, (x,y))
+#            self.ball_list.append(Ball(x,y,1,self.start_velocity, i, self.colorkey))
+        self.ball_list.append(Ball(20,20,1,[1,1],0,self.colorkey))
+        self.ball_list.append(Ball(300,300,1,[-1,-1],1,self.colorkey))
         # print "Created balls."
         
     def detect_collisions(self, lines, width=None, height=None):
@@ -66,7 +68,6 @@ class Balls(object):
 #                if self.ball_list[i].boundary.colliderect(self.ball_list[j].boundary):
                     # reverse direction
                     self._resolve_collision(self.ball_list[i], self.ball_list[j])
-                    print "soft"
                     
     def _resolve_collision(self, ball, ball2):
         print "Collision between ball %s and %s!"%(ball.id, ball2.id)
@@ -78,7 +79,6 @@ class Balls(object):
             for line in lines:
                 if pp.check_collision(ball, line):
                     ball.reverse()
-                    print "KANON"
     
     def move_balls(self):
         for ball in self.ball_list: 

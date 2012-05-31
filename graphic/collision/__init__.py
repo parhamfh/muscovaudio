@@ -32,6 +32,7 @@ class Collidable(object):
         else:
             self._hitmask=get_full_hitmask(self.image, self.rect)
 
+
 def get_colorkey_hitmask(image, rect, colorkey=None):
     """returns a hitmask using an image's colorkey.
        image->pygame Surface,

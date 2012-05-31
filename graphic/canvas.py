@@ -54,7 +54,7 @@ class Canvas(Surface):
         self.global_y = y
         
     def create_balls(self):
-        self.balls = Balls(3,[3,3],300, 300)
+        self.balls = Balls(2,[3,3],300, 300, self.color)
         self.ball_canvas = Surface((self.get_width(),self.get_height()))
         self.ball_canvas.set_colorkey(self.color)
         

@@ -3,6 +3,7 @@ Created on May 29, 2012
 
 @author: parhamfh
 '''
+import pygame
 
 from graphic.collision import Collidable
 from graphic.colour import Colour
@@ -15,7 +16,8 @@ class Line(Collidable):
         self.colour = colour
         self.color_key = Colour.WHITE
         self._rect = rect
-        self._hitmask = None
+#        self._hitmask = pygame.surfarray.array2d(self.image)
+    
     @property
     def image(self):
         return self.rect
