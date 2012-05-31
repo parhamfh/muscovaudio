@@ -5,7 +5,7 @@ Created on May 27, 2012
 '''
 class Mouse(object):
     
-    BUTTONS = {1:"Left Button", 3:"Right Button"}
+    BUTTONS = {1:"Left Button", 3:"Right Button", 4: "Up", 5: "Down"}
     
     def __init__(self):
         self.mouse_down = False

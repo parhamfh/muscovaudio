@@ -35,4 +35,5 @@ class EventHook(object):
     
     def fire(self, *args, **keywargs):
         for handler in self.handlers:
-            handler(*args, **keywargs)
+            if handler is not None:
+                handler(*args, **keywargs)
