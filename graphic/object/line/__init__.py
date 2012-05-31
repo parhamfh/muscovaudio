@@ -20,7 +20,7 @@ class Line(Collidable):
     
     @property
     def image(self):
-        return self.rect
+        return self.line_surface
     
     @property 
     def rect(self):
@@ -31,13 +31,9 @@ class Line(Collidable):
         self.end = (self.end[0] + x, self.end[1] + y)
         
     @property
-    def _collision_rect(self):
-        return self.rect
-    
-    @property
-    def _collision_hitmask(self):
+    def hitmask(self):
         if self._hitmask is None:
-            self._calculate_hitmask()
+            self._hitmask = pygame.surfarray.array_colorkey(self.image)
         return self._hitmask 
     
 # Imports into package
