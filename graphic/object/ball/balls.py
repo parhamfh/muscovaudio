@@ -7,19 +7,22 @@ Created on 28 maj 2012
 import random
 
 from graphic.object.ball import Ball
+
 from event.manager import EventManager
 from event.hook.ball import BallCollision 
+import graphic.collision.pixelperfect as pp
 
+# TODO make inherit from list
 class Balls(object):
 
-    def __init__(self, amount, start_velocity, boundary_width, boundary_height):
+    def __init__(self, amount, start_velocity, boundary_width, boundary_height, colorkey):
         # Amount = number of balls on canvas 
         self.amount = amount 
         self.start_velocity = start_velocity 
         # Ball boundaries 
         self.boundary_width = boundary_width
         self.boundary_height = boundary_height
-        
+        self.colorkey = colorkey
         self.create_balls()
         self.em = EventManager()
         
@@ -29,10 +32,12 @@ class Balls(object):
          
     def create_balls(self):
         self.ball_list = []
-        for i in range(self.amount): 
-            (x, y) = self.generate_random_coordinates()
-            # print 'Coordinates for Ball %s: %s'%(i, (x,y))
-            self.ball_list.append(Ball(x,y,1,self.start_velocity, i))
+#        for i in range(self.amount): 
+#            (x, y) = self.generate_random_coordinates()
+#            # print 'Coordinates for Ball %s: %s'%(i, (x,y))
+#            self.ball_list.append(Ball(x,y,1,self.start_velocity, i, self.colorkey))
+        self.ball_list.append(Ball(20,20,1,[1,1],0,self.colorkey))
+        self.ball_list.append(Ball(300,300,1,[-1,-1],1,self.colorkey))
         # print "Created balls."
         
     def detect_collisions(self, lines, width=None, height=None):
@@ -66,7 +71,8 @@ class Balls(object):
     def _detect_ball_collision(self):
         for i in range(len(self.ball_list)):
             for j in range (i+1,len(self.ball_list)):
-                if self.ball_list[i].boundary.colliderect(self.ball_list[j].boundary):
+                if pp.check_collision(self.ball_list[i], self.ball_list[j]):
+#                if self.ball_list[i].boundary.colliderect(self.ball_list[j].boundary):
                     # reverse direction
                     self._resolve_collision(self.ball_list[i], self.ball_list[j])
                     
@@ -79,11 +85,12 @@ class Balls(object):
     def _detect_line_collision(self, lines):
         for ball in self.ball_list:
             for line in lines:
-                pass
+                if pp.check_collision(ball, line):
+                    ball.reverse()
     
     def move_balls(self):
         for ball in self.ball_list: 
-            ball.boundary = ball.boundary.move(ball.velocity)
+            ball.set_boundary(ball.boundary.move(ball.velocity))
     
     def blit_balls(self, canvas):
         for ball in self.ball_list: 

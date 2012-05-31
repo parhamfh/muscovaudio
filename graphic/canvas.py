@@ -1,7 +1,7 @@
 '''
 Created on May 26, 2012
 
-@author: pfh
+@author: parhamfh
 '''
 
 import pygame
@@ -17,17 +17,18 @@ class Canvas(Surface):
     
     def __init__(self, boundary_width = 630, boundary_height = 470, color = Colour.WHITE):
         super(Canvas, self).__init__((boundary_width, boundary_height))
-        
         # Canvas color
         self.color = color
+        self.fill(self.color)
         
         # Canvas for temporary lines
         self.work_canvas = Surface((boundary_width, boundary_height)) 
-        self.work_canvas.set_colorkey(color)
+        self.work_canvas.set_colorkey(self.color)
         
         # Canvas for drawn lines 
         self.line_canvas = Surface((boundary_width, boundary_height))
         self.line_canvas.fill(self.color)
+        self.line_canvas.set_colorkey(self.color)
 
         # List of lines
         self.lines = []
@@ -53,7 +54,7 @@ class Canvas(Surface):
         self.global_y = y
         
     def create_balls(self):
-        self.balls = Balls(3,[3,3],300, 300)
+        self.balls = Balls(2,[3,3],300, 300, self.color)
         self.ball_canvas = Surface((self.get_width(),self.get_height()))
         self.ball_canvas.set_colorkey(self.color)
         
@@ -62,17 +63,19 @@ class Canvas(Surface):
         self.work_canvas.fill(self.color)
         # Draw new measuring line
         pygame.draw.line(self.work_canvas, Colour.GOLFGREEN, start, end)
-    
+#        self.work_canvas.fill(self.color)
+
     def draw_line(self,start,end):
         # Draw an actual, permanent line and erase measuring line
         self.work_canvas.fill(self.color)
 #        self.mouse_info_canvas.fill(self .color)
-        pygame.draw.line(self.line_canvas, Colour.BLUE, start, end, 5)
-        self.lines.append(Line(start,end, Colour.BLUE))
+        
+        self.lines.append(Line(start,end, Colour.BLUE, pygame.draw.line(self.line_canvas, Colour.BLUE, start, end, 5)))
     
     def draw_mouse_info(self, message, drawing=False):
         # Empty mouse canvas
         self.mouse_info_canvas.fill(self.color)
+        
         # Create font and blit onto canvas
         font = Font(None, 22)
         mouse_info = font.render(message, 1, Colour.CHOCOLATE, Colour.BLACK)
@@ -107,7 +110,7 @@ class Canvas(Surface):
 
         for line in self.lines:
             line.move((x, y))
-    
+#    
     def update_content(self):
         # Clear out line_canvas and read
         self.line_canvas.fill(self.color)
@@ -115,11 +118,12 @@ class Canvas(Surface):
             pygame.draw.line(self.line_canvas, line.colour, line.start, line.end, 5)
             
     def draw_content(self):
+        self.fill(self.color)
         self.update_content()
         # Draw the stuff on the canvas 
-        self.blit(self.line_canvas,(0,0))
         self.blit(self.work_canvas,(0,0))
+        self.blit(self.line_canvas,(0,0))
         self.blit(self.mouse_info_canvas,(self.get_width()-240,self.get_height()-80))
-        
+#        
         if self.ball_canvas is not None:
             self.blit(self.ball_canvas, (0,0))

@@ -1,7 +1,7 @@
 '''
 Created on May 27, 2012
 
-@author: pfh
+@author: parhamfh
 '''
 class Mouse(object):
     

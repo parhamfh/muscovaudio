@@ -1,7 +1,7 @@
 '''
 Created on May 26, 2012
 
-@author: pfh
+@author: parhamfh
 '''
 import pygame
 
@@ -10,7 +10,7 @@ from canvas import Canvas
 
 class Window(object):
     
-    def __init__(self, boundary_width=800, boundary_height=600, bkg_color=Colour.BLACK, canvas=None):
+    def __init__(self, boundary_width=800, boundary_height=600, bkg_color=Colour.RED, canvas=None):
         self.boundary_width = boundary_width
         self.boundary_height = boundary_height
         self.background_color = bkg_color
