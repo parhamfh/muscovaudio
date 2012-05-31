@@ -8,10 +8,12 @@ from pygame.locals import KEYDOWN, K_ESCAPE
 from graphic.window import Window
 from handler.mouse import MouseHandler
 from handler.keyboard import KeyboardHandler
+from handler.sound import SoundHandler 
 from audio.osc.player import OSCPlayer
 from event.manager import EventManager
 from event.hook.keyboard import KeyPressed
 from event.hook.mouse import ButtonPressed
+
 
 class Muscovaudio(object):
     def __init__(self):
@@ -30,13 +32,16 @@ class Muscovaudio(object):
         self.window.init_window()
         
         # Create OSCPlayer
-        self.osc_player = OSCPlayer('127.0.0.1', 9000, "/muscovaudio")
+        self.osc_player = OSCPlayer('127.0.0.1', 9001, "/muscovaudio")
         # Connect OSCPlayer
         self.osc_player.open_connection()
         
         # Init MouseHandler against the mouse
         self.mh = MouseHandler(self.window.get_canvas(), self.osc_player)
         self.kh = KeyboardHandler(self.window.get_canvas())
+        self.sh = SoundHandler(self.osc_player)
+
+        
         # Update the pygame display
         self.window.draw()
         
@@ -45,9 +50,10 @@ class Muscovaudio(object):
         
         # Create Event Manager
         self.em = EventManager()
-        self.em[ButtonPressed] += self.mh.handle_event
-        self.em[KeyPressed] += self.kh.handle_event
         
+        
+        for hook in self.em:
+            print hook
         try:
             while True:
                     # Check events
