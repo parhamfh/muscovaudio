@@ -46,7 +46,7 @@ class Muscovaudio(object):
         self.window.draw()
         
         # Send start signal
-        self.osc_player.send_message(440, '/play')
+        self.osc_player.send_message(440, '/start')
         
         # Create Event Manager
         self.em = EventManager()
