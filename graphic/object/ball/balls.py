@@ -29,12 +29,12 @@ class Balls(object):
          
     def create_balls(self):
         self.ball_list = []
-#        for i in range(self.amount): 
-#            (x, y) = self.generate_random_coordinates()
+        for i in range(self.amount):
+            (x, y) = self.generate_random_coordinates()
 #            # print 'Coordinates for Ball %s: %s'%(i, (x,y))
-#            self.ball_list.append(Ball(x,y,1,self.start_velocity, i, self.colorkey))
-        self.ball_list.append(Ball(20,20,1,[1,1],0,self.colorkey))
-        self.ball_list.append(Ball(300,300,1,[-1,-1],1,self.colorkey))
+            self.ball_list.append(Ball(x,y,1,self.start_velocity, i, self.colorkey))
+#        self.ball_list.append(Ball(400,20,1,[-1,1],0,self.colorkey))
+#        self.ball_list.append(Ball(20,400,1,[1,-1],1,self.colorkey))
         # print "Created balls."
         
     def detect_collisions(self, lines, width=None, height=None):

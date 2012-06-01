@@ -27,6 +27,8 @@ class Ball(collision.Collidable):
         self.colorkey = colorkey
         self.alpha = alpha
         self._hitmask = pygame.surfarray.array2d(self.image)
+#        print 'Ball: printing the\nRect: %s\nSurface: %s\n'%(self.rect, self.image)
+
         
     def reverse(self):
         self.image = pygame.image.load('resources/img/ball_touched.png')
@@ -47,6 +49,7 @@ class Ball(collision.Collidable):
     
     def set_boundary(self, moved_boundary):
         self._rect = moved_boundary
+#        print 'Ball: printing the\nRect: %s\nSurface: %s\n'%(self.rect, self.image)
         
 # Imports into package
 from balls import Balls

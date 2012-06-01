@@ -7,6 +7,7 @@ class Collidable(object):
         self.colorkey = None
         self.alpha = None
         self._hitmask = None
+        
     @abstractproperty
     def rect(self):
         pass

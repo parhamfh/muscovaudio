@@ -64,7 +64,7 @@ class MouseHandler(object):
             
         elif self.mouse.dragging and not self.mouse.mouse_down and self.mouse.left_button_pressed:
             self.mouse.set_dragging(False)
-            self.canvas.draw_line((self.drag_start_x,self.drag_start_y),(self.drag_end_x, self.drag_end_y))
+            self.canvas.draw_line(self.drag_start_x,self.drag_start_y,self.drag_end_x, self.drag_end_y)
 
     def write_mouse_info(self):
         
