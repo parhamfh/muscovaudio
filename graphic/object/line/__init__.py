@@ -33,8 +33,8 @@ class Line(Collidable):
         # Offset of coordinates based on line width
         self.offset = self.line_width * 4
         # Collision stuff
-        self.line_surface = Surface( (self.offset*abs(x1-x0), 
-                                      self.offset*abs(y1-y0)) )
+        self.line_surface = Surface( (self.offset+abs(x1-x0), 
+                                      self.offset+abs(y1-y0)) )
         self.line_surface.set_colorkey(self.colorkey)
 
     @property
@@ -74,11 +74,11 @@ class Line(Collidable):
         # If x is unchanged and y growing
         elif x0 == x1 and y0 < y1:
 #            print "y ->"
-            return rect.move_ip(-int(dx/2), 0)
+            return rect.move_ip(-int((self.offset+dx)/2), 0)
         # If x is growing and y is unchanged
         elif x0 < x1 and y0 == y1:
 #            print "x ->"
-            return rect.move_ip(0, -int(dy/2))
+            return rect.move_ip(0, -int((self.offset+dy)/2))
         # If x is NOT growing and y is
         elif x0 > x1 and y0 < y1:
 #            print "x <-, y ->"
@@ -86,11 +86,11 @@ class Line(Collidable):
         # If x and y both are NOT growing
         elif x0 == x1 and y0 > y1:
 #            print "y <-"
-            return rect.move_ip(-int(dx/2), -int(dy/2))
+            return rect.move_ip(-int((self.offset+dx)/2), -int((self.offset+dy)/2))
         # If x is NOT growing and y is unchanged  
         elif x0 > x1 and y0 == y1:
 #            print "x <-"
-            return rect.move_ip(-dx, -int(dy/2))
+            return rect.move_ip(-dx, -int((self.offset+dy)/2))
         # If both x and y are growing
         elif x0 > x1 and y0 > y1:
             print "x <-, y <-"
