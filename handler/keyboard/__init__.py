@@ -1,12 +1,16 @@
 
 from keyboard import Keyboard
-
+from event.manager import EventManager
+from event.hook.keyboard import KeyPressed
 from pygame.locals import KEYDOWN, KEYUP, K_LEFT, K_RIGHT, K_UP, K_DOWN
+
 class KeyboardHandler(object):
     
     def __init__(self, canvas):
         self.keyboard = Keyboard()
         self.canvas = canvas
+        self.em = EventManager() 
+        self.em[KeyPressed]+= self.handle_event
     
     def handle_event(self, event):
         

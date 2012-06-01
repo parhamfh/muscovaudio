@@ -3,10 +3,13 @@ Created on 28 maj 2012
 
 @author: emser
 '''
-
 import random
 
+import pygame
+
 from graphic.object.ball import Ball
+from event.manager import EventManager
+from event.hook.ball import BallCollision
 import graphic.collision.pixelperfect as pp
 
 # TODO make inherit from list
@@ -21,7 +24,7 @@ class Balls(object):
         self.boundary_height = boundary_height
         self.colorkey = colorkey
         self.create_balls()
-        
+        self.em = EventManager()
         
     def generate_random_coordinates(self):
         # Returns random coordinates for balls 
@@ -35,7 +38,7 @@ class Balls(object):
             self.ball_list.append(Ball(x,y,1,self.start_velocity, i, self.colorkey))
 #        self.ball_list.append(Ball(400,20,1,[-1,1],0,self.colorkey))
 #        self.ball_list.append(Ball(20,400,1,[1,-1],1,self.colorkey))
-        # print "Created balls."
+        print "Created balls."
         
     def detect_collisions(self, lines, width=None, height=None):
         self._detect_wall_collision(width, height)
@@ -49,17 +52,32 @@ class Balls(object):
             b_height = self.boundary_height
         
         for ball in self.ball_list:
-            # TODO: balls get stuck when coordinates are (canvas_width, canvas_heigth) in generate_random_coordinates  
+            # TODO: balls get stuck when coordinates are (canvas_width, canvas_heigth) in generate_random_coordinates 
+            # TODO: send WallCollision
+            
+            
             if ball.boundary.left < 0:
+                ball.image = pygame.image.load('resources/img/ball_red.png')
                 ball.velocity[0] = abs(ball.velocity[0])
+                #print 'Left wall collision!'
+                # self.em[WallCollision].fire('left')
             if ball.boundary.right > b_width:
+                ball.image = pygame.image.load('resources/img/ball_red.png')
                 if ball.velocity[0] > 0: 
                     ball.velocity[0] = -1 * ball.velocity[0]
+                    #print 'Right wall collision!'
+                    # self.em[WallCollision].fire('right')
             if ball.boundary.top < 0: 
-                ball.velocity[1] = abs(ball.velocity[1]) 
+                ball.image = pygame.image.load('resources/img/ball_red.png')
+                ball.velocity[1] = abs(ball.velocity[1])
+                #print 'Top wall collision!'
+                # self.em[WallCollision].fire('top')
             if ball.boundary.bottom > b_height:
+                ball.image = pygame.image.load('resources/img/ball_red.png')
                 if ball.velocity > 0: 
                     ball.velocity[1] = -1 * ball.velocity[1]
+                    #print 'Bottom wall collision!'
+                    # self.em[WallCollision].fire('bottom')
     
     def _detect_ball_collision(self):
         for i in range(len(self.ball_list)):
@@ -70,7 +88,8 @@ class Balls(object):
                     self._resolve_collision(self.ball_list[i], self.ball_list[j])
                     
     def _resolve_collision(self, ball, ball2):
-        print "Collision between ball %s and %s!"%(ball.id, ball2.id)
+        #print "Collision between, ball %s and %s!"%(ball.id, ball2.id)
+        self.em[BallCollision].fire(ball, ball2)
         ball.reverse()
         ball2.reverse()
         
@@ -79,6 +98,8 @@ class Balls(object):
             for line in lines:
                 if pp.check_collision(ball, line):
                     ball.reverse()
+                    # TODO: send LineCollision
+                    # self.em[LineCollision].fire(?,?)
     
     def move_balls(self):
         for ball in self.ball_list: 
@@ -89,11 +110,3 @@ class Balls(object):
             canvas.blit(ball.image, ball.boundary)
     
 
-
-# TODO in muscovaudio.py: 
-# Create Balls object called 'balls' 
-# Inserted in the while loop that handles events in muscovaudio.py : 
-# For every event in pygame.event.get()
-# balls.check_ball_collisions 
-# balls.move_balls()
-# balls.blit_balls(canvas) 

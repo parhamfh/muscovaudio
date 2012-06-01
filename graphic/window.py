@@ -10,7 +10,7 @@ from canvas import Canvas
 
 class Window(object):
     
-    def __init__(self, boundary_width=800, boundary_height=600, bkg_color=Colour.RED, canvas=None):
+    def __init__(self, boundary_width=730, boundary_height=570, bkg_color=Colour.AQUAMARINE, canvas=None):
         self.boundary_width = boundary_width
         self.boundary_height = boundary_height
         self.background_color = bkg_color
@@ -23,7 +23,7 @@ class Window(object):
         self.set_canvas_position(canvas_x, canvas_y)
         self.canvas.set_global_position(canvas_x, canvas_y)
     
-    def set_canvas_postion(self, canvas_x=100, canvas_y=100):
+    def set_canvas_postion(self, canvas_x=50, canvas_y=50):
         self.canvas_x = canvas_x
         self.canvas_y = canvas_y
         self.canvas.set_global_position(canvas_x, canvas_y)

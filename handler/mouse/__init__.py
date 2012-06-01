@@ -5,6 +5,8 @@ Created on May 27, 2012
 '''
 import pygame
 from pygame.locals import MOUSEBUTTONDOWN, MOUSEBUTTONUP
+from event.manager import EventManager
+from event.hook.mouse import ButtonPressed
 from mouse import Mouse
 
 class MouseHandler(object):
@@ -14,6 +16,8 @@ class MouseHandler(object):
         self.canvas = canvas    
         self.mouse = Mouse()
         self.osc_player = osc_player
+        self.em = EventManager()
+        self.em[ButtonPressed] += self.handle_event
        
         # Mouse action 
         self.drag_start_x = 0
