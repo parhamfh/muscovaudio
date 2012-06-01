@@ -1,8 +1,11 @@
 #!/usr/local/bin/python
 
 import sys
+from __init__ import add_lib_to_path
+add_lib_to_path()
 
 import pygame
+print "Using pygame from: %s"%pygame.__file__
 from pygame.locals import KEYDOWN, K_ESCAPE
 
 from graphic.window import Window
