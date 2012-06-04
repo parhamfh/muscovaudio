@@ -93,7 +93,7 @@ class Line(Collidable):
             return rect.move_ip(-dx, -int((self.offset+dy)/2))
         # If both x and y are growing
         elif x0 > x1 and y0 > y1:
-            print "x <-, y <-"
+#            print "x <-, y <-"
             rect.move_ip(-dx, -dy)
         return rect
     
