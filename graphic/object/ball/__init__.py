@@ -26,10 +26,37 @@ class Ball(collision.Collidable):
         self._rect = self.image.get_rect(center=(x_init,y_init))
         self.colorkey = colorkey
         self.alpha = alpha
-        self._hitmask = pygame.surfarray.array2d(self.image)
-#        print 'Ball: printing the\nRect: %s\nSurface: %s\n'%(self.rect, self.image)
+        self._hitmask = pygame.surfarray.array2d(self.image)        
+        self._colliding_with = {}
+        self._colliding = False
+        self._number_of_collisions = 0
 
-        
+    @property
+    def colliding(self):
+        return self._colliding
+
+    def set_colliding(self, colliding):
+        self._colliding = colliding
+    
+    def colliding_with(self, c_object):
+        try:
+            return self._colliding_with[c_object]
+        except KeyError:
+            return False
+    
+    def set_colliding_with(self, c_object):
+        self._colliding_with[c_object] = True
+        if self._number_of_collisions == 0:
+            self.set_colliding(True)
+             
+        self._number_of_collisions += 1 
+      
+    def set_not_colliding_with(self, c_object):
+        self._colliding_with[c_object] = False
+        self._number_of_collisions -= 1 
+        if self._number_of_collisions == 0:
+            self.set_colliding(False)
+          
     def reverse(self):
         self.image = pygame.image.load('resources/img/ball_touched.png')
         self.velocity[0] = -1 * self.velocity[0]

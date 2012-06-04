@@ -88,7 +88,7 @@ class Balls(object):
 #                if self.ball_list[i].boundary.colliderect(self.ball_list[j].boundary):
                     # reverse direction
                     self._resolve_collision(self.ball_list[i], self.ball_list[j])
-                    
+
     def _resolve_collision(self, ball, ball2):
         #print "Collision between, ball %s and %s!"%(ball.id, ball2.id)
         self.em[BallCollision].fire(ball, ball2)
@@ -99,8 +99,17 @@ class Balls(object):
         for ball in self.ball_list:
             for line in lines:
                 if pp.check_collision(ball, line):
-                    self.em[LineCollision].fire()
-                    ball.reverse()
+                    if not ball.colliding:
+                        self.em[LineCollision].fire()
+                        ball.reverse()
+                        ball.set_colliding_with(line)
+                        ball.set_colliding(True)
+                    if ball.colliding:
+                        if not ball.colliding_with(line):
+                            ball.set_colliding_with(line)
+                else:
+                    if ball.colliding_with(line):
+                        ball.set_not_colliding_with(line)
                     
     
     def move_balls(self):
