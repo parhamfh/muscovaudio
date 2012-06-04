@@ -10,7 +10,9 @@ import pygame
 from graphic.object.ball import Ball
 from event.manager import EventManager
 from event.hook.ball import BallCollision
+from event.hook.ball import LineCollision
 import graphic.collision.pixelperfect as pp
+
 
 # TODO make inherit from list
 class Balls(object):
@@ -97,9 +99,9 @@ class Balls(object):
         for ball in self.ball_list:
             for line in lines:
                 if pp.check_collision(ball, line):
+                    self.em[LineCollision].fire()
                     ball.reverse()
-                    # TODO: send LineCollision
-                    # self.em[LineCollision].fire(?,?)
+                    
     
     def move_balls(self):
         for ball in self.ball_list: 

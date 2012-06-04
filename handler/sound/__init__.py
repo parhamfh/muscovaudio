@@ -6,6 +6,7 @@ Created on 30 maj 2012
 
 from event.manager import EventManager
 from event.hook.ball import BallCollision
+from event.hook.ball import LineCollision
 
 class SoundHandler(object):
     """
@@ -15,7 +16,7 @@ class SoundHandler(object):
         self.osc_player = osc_player
         self.em = EventManager()
         self.em[BallCollision] += self.send_sound
-        # self.em[LineCollision] += self.send_sound
+        self.em[LineCollision] += self.send_linecollision 
         # self.em[WallCollision] += self.send_sound
         
     def send_sound(self,ball,ball2):
@@ -32,14 +33,17 @@ class SoundHandler(object):
         y = (y1+y2)/2
         self.osc_player.send_message("%s %s"%(x,y),'/soundhandler/collision')
         
+    
+    def send_linecollision(self):
+        # send 'bang' when ball collides with line 
+        message = 'bang'
+        self.osc_player.send_message(message,'/soundhandler/linecollision') 
+        pass 
  
     
-    def send_wallcollision_sound(self):
+    def send_wallcollision(self):
         # TODO: fix 
         pass 
         #self.osc_player.send_message(1,'/soundhandler/collision/wall')
     
-    def send_linecollision_sound(self):
-        # TODO: fix 
-        pass 
-        #self.osc_player.send_message(1,'/soundhandler/collision/line') 
+
