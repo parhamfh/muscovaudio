@@ -13,7 +13,7 @@ from graphic.collision import Collidable
 from graphic.colour import Colour
 
 class Line(Collidable):
-    def __init__(self, x0, y0, x1, y1, line_color, colorkey):
+    def __init__(self, x0, y0, x1, y1, line_color, colorkey, sp):
         super(Line, self).__init__()
         self.line_width = 1
         # Super canvas position top left corner
@@ -30,13 +30,21 @@ class Line(Collidable):
         self.line_color = line_color
         self.colorkey = colorkey
         
+        # TODO: How does this work?
         # Offset of coordinates based on line width
         self.offset = self.line_width * 4
         # Collision stuff
         self.line_surface = Surface( (self.offset+abs(x1-x0), 
                                       self.offset+abs(y1-y0)) )
         self.line_surface.set_colorkey(self.colorkey)
-
+        
+        # Calculate nomral v
+        self._calculate_normal_vector()
+        
+        self.sp = sp
+        pygame.draw.line(self.sp, Colour.RED, self.super_canvas_start, 
+                         (self.super_canvas_start[0]+self.normal_v[0],self.super_canvas_start[1]+self.normal_v[1])
+                          )
     @property
     def image(self):
         return self.line_surface
@@ -44,17 +52,27 @@ class Line(Collidable):
     @property 
     def rect(self):
         return self._rect
-        
+
     def move(self, (x,y)):
         self.super_canvas_start = (self.super_canvas_start[0] + x, self.super_canvas_start[1]+ y)
         self.super_canvas_end = (self.super_canvas_end[0] + x, self.super_canvas_end[1] + y)
-        
+
     @property
     def hitmask(self):
         if self._hitmask is None:
             self._hitmask = pygame.surfarray.array_colorkey(self.image)
         return self._hitmask 
-
+    
+    def _calculate_normal_vector(self):
+        # A normal vector to the line
+        norm = [-self.end[1], self.end[0]]
+        # Calculate length
+        norm_length = math.sqrt(norm[0]*norm[0]+norm[1]*norm[1])
+        # Normalize norm
+        self.normal_v = [norm[0]/norm_length, norm[1]/norm_length] 
+        # Return normalized normal vector
+        
+        return self.normal_v
     def _adjust_rect(self, rect, x0, y0, x1, y1):
         """
             This version is in place.
@@ -82,7 +100,7 @@ class Line(Collidable):
         # If x is NOT growing and y is
         elif x0 > x1 and y0 < y1:
 #            print "x <-, y ->"
-            rect.move_ip(-dx, 0)
+            return rect.move_ip(-dx, 0)
         # If x and y both are NOT growing
         elif x0 == x1 and y0 > y1:
 #            print "y <-"
@@ -94,7 +112,7 @@ class Line(Collidable):
         # If both x and y are growing
         elif x0 > x1 and y0 > y1:
 #            print "x <-, y <-"
-            rect.move_ip(-dx, -dy)
+            return rect.move_ip(-dx, -dy)
         return rect
     
     def draw(self):
@@ -113,6 +131,11 @@ class Line(Collidable):
                                      self.super_canvas_end[0],
                                      self.super_canvas_end[1])
 #        print 'Line\nRect: %s\nSurface: %s\n'%(self.rect, self.image)
+
+        pygame.draw.line(self.sp, Colour.RED, self.super_canvas_start, 
+                         (self.super_canvas_start[0]+self.normal_v[0]*10,
+                          self.super_canvas_start[1]+self.normal_v[1]*10))
+
         return self.line_surface
     
 # Imports into package

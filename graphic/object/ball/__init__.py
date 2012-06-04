@@ -4,6 +4,8 @@ Created on May 30, 2012
 @author: parhamfh
 '''
 
+import numpy
+
 import pygame 
 import graphic.collision as collision
 
@@ -35,6 +37,9 @@ class Ball(collision.Collidable):
         self.velocity[0] = -1 * self.velocity[0]
         self.velocity[1] = -1 * self.velocity[1]
     
+    def set_velocity(self,v):
+        self.velocity = v
+        
     @property 
     def rect(self):
         return self._rect

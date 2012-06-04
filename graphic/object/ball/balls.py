@@ -32,12 +32,13 @@ class Balls(object):
          
     def create_balls(self):
         self.ball_list = []
-        for i in range(self.amount):
-            (x, y) = self.generate_random_coordinates()
+#        for i in range(self.amount):
+#            (x, y) = self.generate_random_coordinates()
 #            # print 'Coordinates for Ball %s: %s'%(i, (x,y))
-            self.ball_list.append(Ball(x,y,1,self.start_velocity, i, self.colorkey))
+#            self.ball_list.append(Ball(x,y,1,self.start_velocity, i, self.colorkey))
 #        self.ball_list.append(Ball(400,20,1,[-1,1],0,self.colorkey))
 #        self.ball_list.append(Ball(20,400,1,[1,-1],1,self.colorkey))
+        self.ball_list.append(Ball(0,240,1,[1,-`1],0,self.colorkey))
         print "Created balls."
         
     def detect_collisions(self, lines, width=None, height=None):
@@ -97,10 +98,19 @@ class Balls(object):
         for ball in self.ball_list:
             for line in lines:
                 if pp.check_collision(ball, line):
-                    ball.reverse()
+                    self._resolve_bounce(ball, line)
                     # TODO: send LineCollision
                     # self.em[LineCollision].fire(?,?)
     
+    def _resolve_bounce(self, ball, line):
+#        ball.reverse()
+        vprim = 2 * self._dot_product(ball.velocity, line.normal_v) 
+        vprim = [vprim * n for n in line.normal_v] 
+        vprim = [vprim[0] - ball.velocity[0], vprim[1] - ball.velocity[1]]
+        ball.set_velocity(vprim)
+        
+    def _dot_product(self, v, n):
+        return v[0]*n[0]+v[1]*n[1]
     def move_balls(self):
         for ball in self.ball_list: 
             ball.set_boundary(ball.boundary.move(ball.velocity))

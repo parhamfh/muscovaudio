@@ -19,7 +19,7 @@ class Lines(object):
         self.super_canvas = super_canvas
 
     def draw_line(self, x0, y0, x1, y1):
-        line = Line(x0,y0,x1,y1, self.line_color, self.colorkey)
+        line = Line(x0,y0,x1,y1, self.line_color, self.colorkey, self.super_canvas)
         line.draw()
         self.super_canvas.blit(line.line_surface, line.rect)
         self.lines.append(line)
