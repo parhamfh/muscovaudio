@@ -5,7 +5,7 @@ Death's-head Hawkmoth
 
 A project by Emma & Parham
 
-HOW TO USE MUSCOVAUDIO: 
+HOW TO USE MUSCOVAUDIO:
 You will need Python 2.7, Pure Data and Simple Synth (or the equivalent). 
 
 1 ) Download the zip file from https://github.com/parhamfh/muscovaudio/zipball/0.0.1a
