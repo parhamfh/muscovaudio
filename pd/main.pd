@@ -105,7 +105,7 @@
 #X obj 569 -25 s ball_collision;
 #X obj 694 -32 bng 15 250 50 0 ball_collision empty ball_collision
 17 7 0 10 -4034 -1 -1;
-#N canvas 69 31 480 396 drum_loop 1;
+#N canvas 69 31 480 396 drum_loop 0;
 #X obj -72 98 soundfiler;
 #X floatatom -72 122 0 0 0 0 - - -;
 #N canvas 0 22 450 300 (subpatch) 0;
@@ -268,7 +268,7 @@
 #X obj 569 183 cnv 15 300 30 empty empty LINE_BALL_COLLISION 20 12
 0 14 -159808 -262144 0;
 #X obj 575 231 routeOSC /linecollision;
-#N canvas 0 22 697 516 line_collision_soumd 0;
+#N canvas 0 22 697 516 line_collision_soumd 1;
 #X msg 31 109 0;
 #X obj 32 178 counter;
 #X floatatom 32 212 5 0 0 0 - - -;
@@ -290,12 +290,11 @@
 #X floatatom 105 337 5 0 0 3 - - -;
 #X floatatom 143 337 5 0 0 3 - - -;
 #X obj 32 247 sel 0 1 2 3 4 5;
-#X floatatom 340 192 5 0 0 0 - - -;
+#X floatatom 338 192 5 0 0 0 - - -;
 #X obj 36 462 noteout 4;
 #X obj 338 214 pgmout 4;
 #X obj -17 6 cnv 15 300 30 empty empty LINE_BALL_COLLISION 20 12 0
 14 -159808 -262144 0;
-#X msg 425 155 13;
 #X msg 426 214 47;
 #X obj 468 239 bng 15 250 50 0 empty instr_4 instrument_4 17 7 0 10
 -204786 -1 -1;
@@ -312,9 +311,6 @@
 #X obj 30 419 makenote 127 500;
 #X obj 31 88 bng 15 250 50 0 empty stop_arpeggio empty 17 7 0 10 -257985
 -1 -1;
-#X obj 566 169 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
-#X obj 566 147 loadbang;
 #X msg 426 183 12;
 #X msg 18 313 67;
 #X msg 61 312 71;
@@ -329,48 +325,51 @@
 #X obj 215 336 + 12;
 #X obj 261 337 + 24;
 #X text 210 311 ADD MORE OCTAVES HERE?;
-#X connect 0 0 38 0;
+#X obj 338 135 loadbang;
+#X msg 425 155 19;
+#X obj 338 165 12;
+#X connect 0 0 35 0;
 #X connect 1 0 2 0;
 #X connect 2 0 15 0;
-#X connect 3 0 36 0;
-#X connect 4 0 34 0;
-#X connect 5 0 33 0;
-#X connect 6 0 34 0;
-#X connect 7 0 35 0;
-#X connect 8 0 38 1;
-#X connect 10 0 28 2;
-#X connect 11 0 28 0;
-#X connect 12 0 28 0;
-#X connect 13 0 28 0;
-#X connect 14 0 28 0;
+#X connect 3 0 33 0;
+#X connect 4 0 31 0;
+#X connect 5 0 30 0;
+#X connect 6 0 31 0;
+#X connect 7 0 32 0;
+#X connect 8 0 35 1;
+#X connect 10 0 27 2;
+#X connect 11 0 27 0;
+#X connect 12 0 27 0;
+#X connect 13 0 27 0;
+#X connect 14 0 27 0;
 #X connect 15 1 5 0;
 #X connect 15 2 4 0;
 #X connect 15 3 3 0;
 #X connect 15 4 7 0;
 #X connect 15 5 6 0;
-#X connect 15 6 26 0;
+#X connect 15 6 25 0;
 #X connect 16 0 18 0;
 #X connect 20 0 16 0;
-#X connect 21 0 16 0;
-#X connect 22 0 37 0;
-#X connect 23 0 21 0;
-#X connect 24 0 32 0;
-#X connect 25 0 20 0;
-#X connect 27 0 8 0;
-#X connect 28 0 17 0;
-#X connect 28 1 17 1;
-#X connect 29 0 0 0;
-#X connect 30 0 24 0;
-#X connect 31 0 30 0;
-#X connect 32 0 16 0;
-#X connect 33 0 11 0;
-#X connect 34 0 12 0;
-#X connect 35 0 14 0;
-#X connect 36 0 13 0;
-#X connect 37 0 16 0;
-#X connect 38 0 1 0;
-#X connect 39 0 1 2;
-#X connect 39 0 38 0;
+#X connect 21 0 34 0;
+#X connect 22 0 20 0;
+#X connect 23 0 29 0;
+#X connect 24 0 43 0;
+#X connect 26 0 8 0;
+#X connect 27 0 17 0;
+#X connect 27 1 17 1;
+#X connect 28 0 0 0;
+#X connect 29 0 16 0;
+#X connect 30 0 11 0;
+#X connect 31 0 12 0;
+#X connect 32 0 14 0;
+#X connect 33 0 13 0;
+#X connect 34 0 16 0;
+#X connect 35 0 1 0;
+#X connect 36 0 1 2;
+#X connect 36 0 35 0;
+#X connect 42 0 44 0;
+#X connect 43 0 16 0;
+#X connect 44 0 16 0;
 #X restore 64 327 pd line_collision_soumd;
 #X text 574 257 BANG ARPEGGIO;
 #X obj 576 274 bng 15 250 50 0 start_arpeggio empty empty 17 7 0 10
