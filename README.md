@@ -21,7 +21,7 @@ You will need Python 2.7, Pure Data and Simple Synth (or the equivalent).
 
 1 ) Downloada and unzip the latest zip from https://github.com/parhamfh/muscovaudio/tags  
 2 ) Open Simple Synth.  
-3 ) Open Pure Data and launch the pd patch called "main.py".  
+3 ) Open Pure Data and launch the pd patch called "main.pd".  
 4) Make sure that Audio and MIDI is on in Pure Data. Go to Preferences/MIDI Settings… and choose Simple Synth as MIDI output. 
 5) Run ```python muscovaudio.py``` from the terminal and enjoy the craziness!  
 
